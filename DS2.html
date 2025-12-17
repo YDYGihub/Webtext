@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>DeviceStudio 使用手册（深浅切换版）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* ===== 主题变量 ===== */
+:root{
+  /* 浅色（默认） */
+  --bg:#ffffff;
+  --panel:#f5f7fa;
+  --card:#ffffff;
+  --primary:#1e88e5;
+  --text:#222222;
+  --gray:#666666;
+  --radius:6px;
+  --sideW:260px;
+  --shadow:0 2px 8px rgba(0,0,0,.08);
+}
+/* 深色 */
+[data-theme="dark"]{
+  --bg:#0d1b2a;
+  --panel:#122335;
+  --card:#1a2a3a;
+  --primary:#64b5f6;
+  --text:#e3f2fd;
+  --gray:#90a4ae;
+  --shadow:0 2px 8px rgba(0,0,0,.4);
+}
+/* ===== 基础样式 ===== */
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s;}
+a{color:var(--primary);}
+h1,h2,h3{scroll-margin-top:80px;}
+h1{font-size:2em;margin:.3em 0;}
+h2{font-size:1.5em;margin:.8em 0 .4em;padding-left:.6em;border-left:4px solid var(--primary);}
+h3{font-size:1.2em;margin:.6em 0 .3em;}
+/* 顶部栏 */
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:60px;
+  background:var(--panel);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  z-index:10;
+  box-shadow:var(--shadow);
+}
+header h1{margin:0;font-size:1.4em;font-weight:500;}
+#themeToggle{
+  background:none;border:none;font-size:24px;cursor:pointer;
+  color:var(--primary);transition:transform .3s;
+}
+#themeToggle:hover{transform:scale(1.15);}
+/* 布局 */
+.container{display:flex;margin-top:60px;}
+#sidebar{
+  width:var(--sideW);
+  background:var(--panel);
+  height:calc(100vh - 60px);
+  overflow-y:auto;
+  padding:16px;
+  position:sticky;
+  top:60px;
+  flex-shrink:0;
+  transition:background .3s;
+}
+#sidebar ul{list-style:none;margin:0;padding:0;}
+#sidebar li{margin:6px 0;}
+#sidebar a{
+  display:block;
+  padding:8px 12px;
+  border-radius:var(--radius);
+  color:var(--gray);
+  transition:background .2s,color .2s;
+   text-decoration: none
+}
+#sidebar a.active,
+#sidebar a:hover{
+  background:var(--primary);
+  color:#fff;
+}
+#content{
+  flex:1;
+  padding:24px 32px;
+  max-width:900px;
+}
+/* 在样式表中添加 */
+.figure-caption {
+  text-align: center;       /* 居中对齐 */
+  color: var(--gray);       /* 使用主题灰色 */
+  font-size: 0.9em;         /* 字体稍小 */
+  font-style: normal;       
+  margin: 8px 0 24px;       /* 上下边距 */
+  line-height: 1.5;         /* 行高 */
+}
+#sidebar a.h2 {
+  font-weight: bold;        /* 加粗 */
+  font-size: 1.1em;         /* 字体稍大 */
+  margin: 12px 0 6px;       /* 上下边距 */
+}
+
+#sidebar a.h3 {
+  font-weight: normal;      /* 正常字重 */
+  font-size: 0.95em;        /* 字体稍小 */
+  margin-left: 16px;        /* 左侧缩进 */
+}
+/* 图片热点 */
+.hotspot-img{
+  position:relative;
+  display:inline-block;
+  line-height:0;
+  margin:16px 0;
+}
+.hotspot-img img{
+  max-width:100%;
+  border-radius:var(--radius);
+}
+.hotspot-img svg{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+.hotspot-img svg a{
+  pointer-events:all;
+}
+.hotspot-img svg polygon{
+  fill:rgba(30,136,229,.08);
+  stroke:var(--primary);
+  stroke-width:2;
+  transition:fill .2s;
+}
+.hotspot-img svg a:hover polygon{
+  fill:rgba(30,136,229,.2);
+}
+/* 移动端折叠按钮 */
+#toggle{
+  display:none;
+}
+@media(max-width:768px){
+  #toggle{
+    display:block;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+  }
+  #sidebar{
+    position:fixed;
+    left:-100%;
+    transition:left .3s;
+    z-index:9;
+  }
+  #sidebar.show{
+    left:0;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>DeviceStudio 使用手册</h1>
+  <button id="themeToggle" aria-label="切换主题">🌞</button>
+</header>
+
+<div class="container">
+  <!-- 左侧导航 -->
+  <aside id="sidebar">
+    <ul id="nav"></ul>
+  </aside>
+
+  <!-- 主内容 -->
+  <main id="content">
+    <h1 id="top">DeviceStudio 使用手册</h1>
+    <p>学习这个软件之前，建议先了解一下VASP。这个软件的计算本质上是图形版的VASP，参数设置和VASP基本相同。</p>
+
+    <h2 id="1-quick">1 安装与资源集合</h2>
+  <ul>
+    <li>官方主页（安装）：<a href="https://cloud.hzwtech.com/web/product-service?id=6" target="_blank">https://cloud.hzwtech.com</a></li>
+    <li>官方教程：<a href="https://hzwtech.com/Help/StartedGuide.html#si" target="_blank">Device Studio基本使用指南</a></li>
+    <li>结构优化和能带教程：<a href="https://hzwtech.com/Device%20Studio/DS-PAW/build/html/introduction.html" target="_blank">DS-PAW使用指南</a></li>
+    <li>晶体结构查找：<a href="https://next-gen.materialsproject.org/materials" target="_blank">Materials Project（需要注册）</a></li>
+    <li>VASP参数设置论坛分享：<a href="https://www.cnblogs.com/" target="_blank">博客园</a></li>
+  </ul>
+
+    <h2 id="2-DS软件界面功能">2 DS软件界面功能</h2>
+    <h3 id="2-1-主界面按钮">2.1 主界面按钮</h3>
+    <div class="hotspot-img">
+      <img id="主界面基本框架" src="picture/主界面基本框架.png" alt="图1 主界面">
+         <svg viewBox="0 0 800 400"><a href="#2-2-build"><polygon points="65,0 85,0 85,20 65,20"/></a></svg>
+         <svg viewBox="0 0 800 400"><a href="#2-3-Simulator"><polygon points="95,0 115,0 115,20 95,20"/></a></svg>
+    </div>
+    <p class="figure-caption">图 1 主界面介绍（点击蓝色边框可跳转相应章节）</p>
+    
+    <h3 id="2-2-build">2.2 build</h3>
+    <div class="hotspot-img">
+      <img id="fig2" src="picture/build.png" alt="图2 build" style="width: 60%; max-width: 600px; display: block; margin: 0 auto;">
+    </div>
+    <p class="figure-caption">图2 build</p>
+
+        <h3 id="2-3-Simulator">2.3 Simulator</h3>
+    <div class="hotspot-img">
+      <img id="fig2" src="picture/Simulator.png" alt="图2 Simulator" style="width: 70%; max-width: 600px; display: block; margin: 0 auto;">
+    </div>
+    <p class="figure-caption">图3 simulator</p>
+
+    <h3 id="2-4-WinSCP">2.4 WinSCP</h3>
+    <p >WinSCP主要用于连接远程服务器，下载结构文件。</p>
+
+    <h3 id="2-5-服务器切换及设置">2.5 服务器切换及设置</h3>
+    <p>用于切换不同的计算服务器。select可以切换服务器。</p>
+    <p>目前支持的服务器有：
+        <ul>
+            <li>Mycomputer(用自己的电脑算)</li>
+            <li>内蒙A区（B区）（目前的云内存已满，建议使用其他服务器）</li>
+            <li>并行云区（比较常用）</li>
+            <li>华北云区（几乎没人用过）</li>
+            <li>其他云区不清楚了</li>
+        </ul>
+    </p>
+
+    <h2 id="3-模拟计算">3 模拟计算</h2>
+    <h3 id="3-1-分子结构建模">3.1 分子结构建模</h3>
+    <p><strong><li>方法一：导入完整结构模型</strong></p></li>
+    <p>1.在DS主界面的File菜单中选择Import/Online，可查找软件自带的示例结构文件。</p>
+    <p>2.从Materials Project网站下载。</p>
+    <p><strong><li>方法二：自建结构模型</strong></p></li>
+    <p>1.已知结构信息，在Build/Molecule下输入原子和位置信息建模。</p>
+    <p>2.未知结构信息，想还原文献中的结构模型，优先导入已知结构，在此基础上进行替换和修饰。如：硅烯结构可导入石墨烯结构进行替换。</p>
+    <p>3.实在是没有结构信息，只能自己手搓。</p>
+    <div class="hotspot-img">
+      <img id="fig5" src="picture/晶胞建模.png" alt="图5 晶胞建模">
+    </div>
+    <p class="figure-caption">图 4：晶胞建模（里面没有的只能自己探索了）</p>
+
+    <h3 id="3-2-结构优化">3.2 结构优化</h3>
+
+
+    <h3 id="3-3-能带计算">3.3 能带计算</h3>
+    <div class="hotspot-img">
+      <img id="fig5" src="assets/fig5_shortcuts.png" alt="图5 快捷键表">
+    </div>
+    <p><em>图 5：点击 Ctrl+D 提示 → 跳到 4.2 原子编辑</em></p>
+
+
+    <h2 id="4-案例">4 案例</h2>
+    <h3 id="4-1-AlN">4.1 AlN表面生长石墨烯</h3>
+
+
+
+    <h2 id="history">版本历史 &amp; 反馈通道</h2>
+    <ul>
+      <li>更新日期：2025-12-16</li>
+
+    </ul>
+
+    <h2 id="appendix">附录</h2>
+    <ul>
+      <li><a href="#">A. 元素赝势表下载</a>（链接待补）</li>
+      <li><a href="#">B. 快捷键清单</a></li>
+      <li>C. 引用文献 BibTeX：（待补）</li>
+    </ul>
+  </main>
+</div>
+
+<button id="toggle" aria-label="折叠侧边栏">☰</button>
+
+<script>
+/* 侧边栏生成 + 高亮 */
+const nav=document.getElementById('nav');
+const heads=document.querySelectorAll('#content h2,#content h3');
+const frag=document.createDocumentFragment();
+heads.forEach(h=>{
+  const a=document.createElement('a');
+  a.textContent=h.textContent;
+  a.href='#'+h.id;
+  a.className=h.tagName.toLowerCase();
+  const li=document.createElement('li');
+  li.appendChild(a); frag.appendChild(li);
+});
+nav.appendChild(frag);
+
+function updateActive(){
+  let cur=null;
+  heads.forEach(h=>{
+    if(h.getBoundingClientRect().top<=80) cur=h;
+  });
+  nav.querySelectorAll('a').forEach(a=>a.classList.remove('active'));
+  if(cur) nav.querySelector('a[href="#'+cur.id+'"]')?.classList.add('active');
+}
+window.addEventListener('scroll',updateActive); updateActive();
+
+/* 移动端折叠 */
+const toggle=document.getElementById('toggle');
+const sidebar=document.getElementById('sidebar');
+toggle.addEventListener('click',()=>sidebar.classList.toggle('show'));
+
+/* 深浅主题切换 + 本地存储 */
+const themeKey='ds-theme';
+const body=document.documentElement;
+const btn=document.getElementById('themeToggle');
+
+function applyTheme(t){
+  body.setAttribute('data-theme',t);
+  btn.textContent=t==='dark'?'🌜':'🌞';
+  localStorage.setItem(themeKey,t);
+}
+const saved=localStorage.getItem(themeKey);
+applyTheme(saved||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+
+btn.addEventListener('click',()=>{
+  const curr=body.getAttribute('data-theme');
+  applyTheme(curr==='dark'?'light':'dark');
+});
+</script>
+</body>
+</html>
