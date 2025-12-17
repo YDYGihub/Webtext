@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>DeviceStudio 使用手册（深浅切换版）</title>
+<title>DeviceStudio 使用手册</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 /* ===== 主题变量 ===== */
@@ -202,7 +202,7 @@ header h1{margin:0;font-size:1.4em;font-weight:500;}
     <h2 id="2-DS软件界面功能">2 DS软件界面功能</h2>
     <h3 id="2-1-主界面按钮">2.1 主界面按钮</h3>
     <div class="hotspot-img">
-      <img id="主界面基本框架" src="/myweb/主界面基本框架.png" alt="图1 主界面">
+      <img id="主界面基本框架" src="/Webtext/主界面基本框架.png" alt="图1 主界面">
          <svg viewBox="0 0 800 400"><a href="#2-2-build"><polygon points="65,0 85,0 85,20 65,20"/></a></svg>
          <svg viewBox="0 0 800 400"><a href="#2-3-Simulator"><polygon points="95,0 115,0 115,20 95,20"/></a></svg>
     </div>
@@ -210,13 +210,13 @@ header h1{margin:0;font-size:1.4em;font-weight:500;}
     
     <h3 id="2-2-build">2.2 build</h3>
     <div class="hotspot-img">
-      <img id="fig2" src="/myweb/build.png" alt="图2 build" style="width: 60%; max-width: 600px; display: block; margin: 0 auto;">
+      <img id="fig2" src="/Webtext/build.png" alt="图2 build" style="width: 60%; max-width: 600px; display: block; margin: 0 auto;">
     </div>
     <p class="figure-caption">图2 build</p>
 
         <h3 id="2-3-Simulator">2.3 Simulator</h3>
     <div class="hotspot-img">
-      <img id="fig2" src="/myweb/Simulator.png" alt="图2 Simulator" style="width: 70%; max-width: 600px; display: block; margin: 0 auto;">
+      <img id="fig3" src="/Webtext/Simulator.png" alt="图2 Simulator" style="width: 70%; max-width: 600px; display: block; margin: 0 auto;">
     </div>
     <p class="figure-caption">图3 simulator</p>
 
@@ -245,24 +245,62 @@ header h1{margin:0;font-size:1.4em;font-weight:500;}
     <p>2.未知结构信息，想还原文献中的结构模型，优先导入已知结构，在此基础上进行替换和修饰。如：硅烯结构可导入石墨烯结构进行替换。</p>
     <p>3.实在是没有结构信息，只能自己手搓。</p>
     <div class="hotspot-img">
-      <img id="fig5" src="/myweb/晶胞建模.png" alt="图5 晶胞建模">
+      <img id="fig4" src="/Webtext/晶胞建模.png" alt="图4 晶胞建模">
     </div>
     <p class="figure-caption">图 4：晶胞建模（里面没有的只能自己探索了）</p>
 
     <h3 id="3-2-结构优化">3.2 结构优化</h3>
-
+    <div class="hotspot-img">
+      <img id="fig5" src="/Webtext/结构优化1.png" alt="图5 结构优化1">
+    </div>
+    <p class="figure-caption">图 5：结构优化Relaxtion设置</p>
+    <p><strong><li>部分参数解释如下：</strong></p></li>
+    <p><strong>Number of steps：</strong>结构优化步数上限，建议300步左右。</p>
+    <p><strong>Force tolerance：</strong>结构优化力阈值，建议0.01 eV/Å。</p>
+    <p><strong>Degrees of freedom：</strong>首次优化勾选Relax all，后续优化（看情况）可以勾选Relax atom positions。</p>
+    <p><strong>Constraints：</strong>结构优化约束，勾选Lattice constraints。设置如下图</p>
+    <div class="hotspot-img">
+      <img id="fig6" src="/Webtext/结构固定设置.png" alt="图6 结构固定设置">
+    </div>
+    <p class="figure-caption">图 6：结构优化Lattice constraints设置</p>
+    <div class="hotspot-img">
+      <img id="fig7" src="/Webtext/结构优化2.png" alt="图5 结构优化2">
+    </div>
+    <p class="figure-caption">图 7：结构优化Solver setting设置</p>
+    <p><strong><li>部分参数解释如下：</strong></p></li>
+    <p><strong>k-point sampling：</strong>能带计算k点网格，n1、n2、n3分别对应x、y、z方向的k点网格数，这个数x晶格常数a的值大概在40左右就行。
+      例如a=3Å，n1=12，n2=12，n3=12。那么是使用Gamma-centered还是Monkhorst-Pack网格(以下是<a href="http://bbs.keinsci.com/thread-5429-1-1.html" target="_blank">网上的建议</a>)。</p>
+    <p>奇数的时候，m和g是一样的。</p> 
+    <p>k点小的时候一般是g，且用偶数。</p>
+    <p>k点多的时候，用m的奇数，或者G的奇偶。</p>
+    <p><strong>cut-off：</strong>截断能设置，建议500eV，计算杂化时如果计算时间过久可以改成400eV。</p>
+    <p><strong>Symmtery：</strong>是否使用对称性计算。</p>
+    <p><strong>Convergence：</strong>勾选，Energy tolerance，建议1e-5。（根据计算要求精度调整）</p>
+  
+    <div class="hotspot-img">
+      <img id="fig8" src="/Webtext/结构优化3.png" alt="图8 结构优化3">
+    </div>
+    <p class="figure-caption">图 8：结构优化Physical settings设置</p>
+    <p><strong>Van der Waals:</strong>色散矫正（一般来讲是勾选，其他情况看着办），关于它的三种类型可以看这篇文章
+      <a href="http://sobereva.com/210" target="_blank">DFT-D色散校正的使用</a>。</p>
+    <p>不同的人提出过不同的色散校正方法，如TS、XDM、VV10等，其中最成功、也是目前最为流行的是Grimme提出的DFT-D，有以下版本:
+    <li>(1) JCC,25,1463(2004)：<strong>DFT-D1</strong>。已过时</li>
+    <li>(2) JCC,27,1787(2006)：<strong>DFT-D2</strong>。已过时</li>
+    <li>(3) JCP,132,154104(2010)：<strong>DFT-D3</strong>。比DFT-D2更严谨，整体精度更好，支持元素更多（支持从H到Pu），对几乎所有主流泛函都提供了参数，而且几乎不令计算耗时有任何增加，实现也很容易，如今几乎所有主流量化程序都支持DFT-D3</li>
+    <li>(4) JCP,147,034112(2017)：<strong>DFT-D4</strong>。比DFT-D3的改进在于可以考虑实际电子结构对色散校正能的影响，但计算方式复杂得多，目前只有较少程序支持</li>
+    </p>
+    <p><strong>最后是关于磁性的计算，没经验，只能自己摸索了。</strong></p>
 
     <h3 id="3-3-能带计算">3.3 能带计算</h3>
     <div class="hotspot-img">
-      <img id="fig5" src="assets/fig5_shortcuts.png" alt="图5 快捷键表">
+      <img id="fig9" src="/Webtext/能带计算.png" alt="图9 能带计算">
     </div>
-    <p><em>图 5：点击 Ctrl+D 提示 → 跳到 4.2 原子编辑</em></p>
-
+    <p class="figure-caption">图 9：能带计算设置</p>
+    <p><strong>SCF：</strong>自洽场计算，勾选Wave functions和Bader。</p>
+    <p><strong>Density of states和Band structure：</strong>都勾选，这是一步算的步骤，还有分两步算的可以看官网的<a href="https://hzwtech.com/Device%20Studio/DS-PAW/build/html/introduction.html" target="_blank">操作手册</a>。</p>
 
     <h2 id="4-案例">4 案例</h2>
     <h3 id="4-1-AlN">4.1 AlN表面生长石墨烯</h3>
-
-
 
     <h2 id="history">版本历史 &amp; 反馈通道</h2>
     <ul>
@@ -270,12 +308,6 @@ header h1{margin:0;font-size:1.4em;font-weight:500;}
 
     </ul>
 
-    <h2 id="appendix">附录</h2>
-    <ul>
-      <li><a href="#">A. 元素赝势表下载</a>（链接待补）</li>
-      <li><a href="#">B. 快捷键清单</a></li>
-      <li>C. 引用文献 BibTeX：（待补）</li>
-    </ul>
   </main>
 </div>
 
